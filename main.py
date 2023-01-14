@@ -1,3 +1,11 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Jan 13 09:12:22 2023
+
+@author: Alvaro
+"""
+
 import pygame
 import random
 
@@ -5,8 +13,10 @@ import random
 pygame.init()
 
 # Set up the window
-screen = pygame.display.set_mode((800, 600))
-pygame.display.set_caption("Aim Game")
+screen_x = 800
+screen_y = 600
+screen = pygame.display.set_mode((screen_x, screen_y))
+pygame.display.set_caption("OSU 2")
 
 # Create a box class
 class Box:
@@ -44,6 +54,14 @@ while running:
                 if box.collides_with_point(x, y):
                     boxes.remove(box)
 
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_a]:
+        for box in boxes:
+            box.x += 1
+    if keys[pygame.K_d]:
+        for box in boxes:
+            box.x -= 1
+
     # Clear the screen
     screen.fill((255, 255, 255))
 
@@ -56,8 +74,8 @@ while running:
 
     # Generate a new box
     if len(boxes) < 3 and random.randint(0, 100) < 10:
-        x = random.randint(0, 800 - 60)
-        y = random.randint(0, 600 - 60)
+        x = random.randint(0, screen_x - 60)
+        y = random.randint(0, screen_y - 60)
         width = random.randint(10, 100)
         height = random.randint(10, 100)
         color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
