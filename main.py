@@ -20,6 +20,8 @@ screen = pygame.display.set_mode((screen_x, screen_y))
 pygame.display.set_caption("OSU 2")
 
 # Create a box class
+
+
 class Box:
     def __init__(self, x, y, width, height, color):
         self.x = x
@@ -29,7 +31,8 @@ class Box:
         self.color = color
 
     def draw(self, screen):
-        pygame.draw.rect(screen, self.color, (self.x, self.y, self.width, self.height))
+        pygame.draw.rect(screen, self.color,
+                         (self.x, self.y, self.width, self.height))
 
     def collides_with_point(self, x, y):
         if x > self.x and x < self.x + self.width and y > self.y and y < self.y + self.height:
@@ -37,23 +40,37 @@ class Box:
         else:
             return False
 
+
 # Create a list to store the boxes
 boxes = []
 
-# Game loop
+# Create a font object
+font = pygame.font.Font(None, 36)
+
+player = player.Player("sprites/Canon.png", screen_x/2, screen_y)
+
+lives = 3
+score = 0
+
+clock = pygame.time.Clock()
 running = True
 while running:
     # Handle events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        elif event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONDOWN:
             # Get the mouse position
             x, y = pygame.mouse.get_pos()
             # Check if the mouse collides with any boxes
             for box in boxes:
                 if box.collides_with_point(x, y):
                     boxes.remove(box)
+                    score += 1
+
+        if event.type == pygame.MOUSEMOTION:
+            x, y = pygame.mouse.get_pos()
+            player.point_at(x, y)
 
     keys = pygame.key.get_pressed()
     if keys[pygame.K_a]:
@@ -64,14 +81,13 @@ while running:
             box.x -= 1
 
     # Clear the screen
-    screen.fill((255, 255, 255))
+    screen.fill((0, 0, 0))
 
     # Draw the boxes
     for box in boxes:
         box.draw(screen)
 
-    # Update the display
-    pygame.display.update()
+    screen.blit(player.image, player.rect)
 
     # Generate a new box
     if len(boxes) < 3 and random.randint(0, 100) < 10:
@@ -79,8 +95,21 @@ while running:
         y = random.randint(0, screen_y - 60)
         width = random.randint(10, 100)
         height = random.randint(10, 100)
-        color = (random.randint(0, 255), random.randint(0, 255), random.randint(0, 255))
+        color = (random.randint(0, 255), random.randint(
+            0, 255), random.randint(0, 255))
         boxes.append(Box(x, y, width, height, color))
+
+    # Keep track of score and lives
+    lives_text = font.render(f"Lives: {lives}", True, (255, 0, 0))
+    screen.blit(lives_text, (20, 20))
+
+    score_text = font.render(f"Score: {score}", True, (255, 0, 0))
+    screen.blit(score_text, (20, 60))
+
+    # Update the display
+    pygame.display.update()
+
+    clock.tick(60)
 
 # Close Pygame
 pygame.quit()
