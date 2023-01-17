@@ -106,6 +106,9 @@ while running:
     score_text = font.render(f"Score: {score}", True, (255, 0, 0))
     screen.blit(score_text, (20, 60))
 
+    if lives <= 0:
+        running = False
+
     # Update the display
     pygame.display.update()
 
