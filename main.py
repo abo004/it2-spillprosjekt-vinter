@@ -8,6 +8,7 @@ Created on Fri Jan 13 09:12:22 2023
 
 import pygame
 import random
+import player
 
 # Initialize Pygame
 pygame.init()
