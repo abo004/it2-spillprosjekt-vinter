@@ -9,16 +9,11 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.center = (x, y)
 
-    def rotate(self, angle):
-        self.image = pygame.transform.rotate(self.image, angle)
+    def rotate_to_angle(self, angle):
+        self.image = pygame.transform.rotate(self.original_image, angle)
         self.rect = self.image.get_rect(center=self.rect.center)
 
     def point_at(self, x, y):
         direction = pygame.math.Vector2(x, y) - self.rect.center
         angle = direction.angle_to((0, -1))
-        self.image = pygame.transform.rotate(self.original_image, angle)
-        self.rect = self.image.get_rect(center=self.rect.center)
-        # self.rotate(angle)
-
-
-# screen.blit(player.image, player.rect)
+        self.rotate_to_angle(angle)

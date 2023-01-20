@@ -8,7 +8,8 @@ Created on Fri Jan 13 09:12:22 2023
 
 import pygame
 import random
-import player
+from player import Player
+from enemy import Enemy
 
 # Initialize Pygame
 pygame.init()
@@ -19,38 +20,27 @@ screen_y = 600
 screen = pygame.display.set_mode((screen_x, screen_y))
 pygame.display.set_caption("OSU 2")
 
-# Create a box class
-
-
-class Box:
-    def __init__(self, x, y, width, height, color):
-        self.x = x
-        self.y = y
-        self.width = width
-        self.height = height
-        self.color = color
-
-    def draw(self, screen):
-        pygame.draw.rect(screen, self.color,
-                         (self.x, self.y, self.width, self.height))
-
-    def collides_with_point(self, x, y):
-        if x > self.x and x < self.x + self.width and y > self.y and y < self.y + self.height:
-            return True
-        else:
-            return False
-
-
-# Create a list to store the boxes
-boxes = []
+fps = 60
 
 # Create a font object
 font = pygame.font.Font(None, 36)
 
-player = player.Player("sprites/Canon.png", screen_x/2, screen_y)
+player = Player("sprites/Canon.png", screen_x/2, screen_y)
+enemies = pygame.sprite.Group()
 
-lives = 3
+
 score = 0
+number_of_enemies = 3
+velocity = 3
+lives = 3
+
+
+def reduce_lives():
+    global lives
+    lives -= 1
+
+
+dt = 0
 
 clock = pygame.time.Clock()
 running = True
@@ -59,45 +49,30 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            # Get the mouse position
-            x, y = pygame.mouse.get_pos()
-            # Check if the mouse collides with any boxes
-            for box in boxes:
-                if box.collides_with_point(x, y):
-                    boxes.remove(box)
-                    score += 1
 
         if event.type == pygame.MOUSEMOTION:
             x, y = pygame.mouse.get_pos()
             player.point_at(x, y)
 
-    keys = pygame.key.get_pressed()
-    if keys[pygame.K_a]:
-        for box in boxes:
-            box.x += 1
-    if keys[pygame.K_d]:
-        for box in boxes:
-            box.x -= 1
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            for enemy in enemies:
+                if enemy.rect.collidepoint(x, y):
+                    score += 1
+                    enemies.remove(enemy)
+                    break
 
     # Clear the screen
     screen.fill((0, 0, 0))
 
-    # Draw the boxes
-    for box in boxes:
-        box.draw(screen)
+    enemies.update(enemies, dt)
+
+    for i in range(len(enemies), number_of_enemies):
+        enemies.add(Enemy("sprites/sprite0.jpg", velocity +
+                    random.randint(0, velocity), screen_x, screen_y, reduce_lives))
+
+    enemies.draw(screen)
 
     screen.blit(player.image, player.rect)
-
-    # Generate a new box
-    if len(boxes) < 3 and random.randint(0, 100) < 10:
-        x = random.randint(0, screen_x - 60)
-        y = random.randint(0, screen_y - 60)
-        width = random.randint(10, 100)
-        height = random.randint(10, 100)
-        color = (random.randint(0, 255), random.randint(
-            0, 255), random.randint(0, 255))
-        boxes.append(Box(x, y, width, height, color))
 
     # Keep track of score and lives
     lives_text = font.render(f"Lives: {lives}", True, (255, 0, 0))
@@ -112,7 +87,7 @@ while running:
     # Update the display
     pygame.display.update()
 
-    clock.tick(60)
+    dt = clock.tick(fps) / 1000
 
 # Close Pygame
 pygame.quit()
