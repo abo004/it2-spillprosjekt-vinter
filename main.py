@@ -31,7 +31,7 @@ enemies = pygame.sprite.Group()
 
 score = 0
 number_of_enemies = 3
-velocity = 3
+velocity = 2
 lives = 3
 
 
@@ -67,8 +67,9 @@ while running:
     enemies.update(enemies, dt)
 
     for i in range(len(enemies), number_of_enemies):
+        rand_variation = random.random()+0.5
         enemies.add(Enemy("sprites/sprite0.jpg", velocity +
-                    random.randint(0, velocity), screen_x, screen_y, reduce_lives))
+                          rand_variation**2*velocity, screen_x, screen_y, reduce_lives, (rand_variation)))
 
     enemies.draw(screen)
 

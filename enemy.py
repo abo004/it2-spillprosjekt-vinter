@@ -1,16 +1,18 @@
 import pygame
-from random import randint
+import random
 
 
 class Enemy(pygame.sprite.Sprite):
-    def __init__(self, image_file, vel, screen_x, screen_y, reduce_lives):
+    def __init__(self, image_file, vel, screen_x, screen_y, reduce_lives, scale):
         super().__init__()
         self.image = pygame.image.load(image_file).convert_alpha()
+        self.image = pygame.transform.scale(
+            self.image, (self.image.get_width()*scale, self.image.get_height()*scale))
         self.original_image = self.image
         self.rect = self.image.get_rect()
 
-        self.x = -self.rect.width
-        self.y = randint(0, screen_y-self.rect.height)
+        self.x = -self.rect.width*(random.random()*10+1)
+        self.y = random.randint(0, screen_y-self.rect.height)
 
         self.rect.x = self.x
         self.rect.y = self.y
@@ -24,8 +26,6 @@ class Enemy(pygame.sprite.Sprite):
     def update(self, enemies, dt):
         self.x += self.vel
         self.rect.x = self.x
-        print('v', self.vel*dt)
-        print('x', self.rect.x)
         if (self.screen_x < self.rect.x):
             enemies.remove(self)
             self.reduce_lives()
