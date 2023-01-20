@@ -25,7 +25,7 @@ fps = 60
 # Create a font object
 font = pygame.font.Font(None, 36)
 
-player = Player("sprites/Canon.png", screen_x/2, screen_y)
+player = Player("sprites/gunner.png", screen_x/2, screen_y)
 enemies = pygame.sprite.Group()
 
 
