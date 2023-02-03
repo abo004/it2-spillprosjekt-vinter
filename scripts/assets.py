@@ -3,14 +3,13 @@ from button import Button
 from constants import *
 from player import Player
 from sprite import Sprite
-from load_game import init_game
 
 
 # Fonts
 
 fonts = {
-    "text1": pygame.font.Font(None, 36),
-    "score": pygame.font.Font(None, 240)
+    "text1": pygame.font.Font('fonts/trigram.ttf', 28),
+    "score": pygame.font.Font('fonts/trigram.ttf', SCORE_TEXT_SIZE)
 }
 
 
@@ -20,7 +19,7 @@ heart_icon = Sprite(pygame.image.load(
     "sprites/heart-icon.png").convert_alpha(), 20, 20, 0.09, "topleft")
 
 enemy_image = pygame.image.load(
-    "sprites/enemy1.png").convert_alpha()
+    "sprites/enemy.png").convert_alpha()
 
 
 # Text
@@ -38,10 +37,10 @@ lives_text = fonts["text1"].render(
 # Game objects
 
 player = Player(pygame.image.load(
-    "sprites/gunner.png").convert_alpha(), SCREEN_WIDTH/2, SCREEN_HEIGHT)
+    "sprites/canonLineArt.png").convert_alpha(), SCREEN_WIDTH/2, SCREEN_HEIGHT)
 
-button_width = 200
-button_height = 40
+button_width = 300
+button_height = 60
 restart_button = Button(pygame.Rect((SCREEN_WIDTH-button_width)/2, (SCREEN_HEIGHT-button_height)/2-50, button_width, button_height),
                         (255, 255, 255), "Restart", (0, 0, 0), fonts["text1"])
 quit_button = Button(pygame.Rect((SCREEN_WIDTH-button_width)/2, (SCREEN_HEIGHT-button_height)/2+50, button_width, button_height),

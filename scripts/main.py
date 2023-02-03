@@ -14,6 +14,9 @@ if __name__ == "__main__":
     import end_screen
     import game
 
+    pygame.mixer.music.load("sounds/gamingmusiccoollol.mp3")
+    pygame.mixer.music.play(-1)
+
     clock = pygame.time.Clock()
     dt = 0
 
@@ -29,7 +32,7 @@ if __name__ == "__main__":
 
         if game.lives > 0:
             game.handle_input(events)
-            game.update(dt)
+            game.update(dt, pygame.time.get_ticks())
             game.draw(screen)
 
         else:
@@ -40,5 +43,5 @@ if __name__ == "__main__":
 
         dt = clock.tick(FPS) / 1000
 
-    # Close Pygame
+    pygame.mixer.stop()
     pygame.quit()
