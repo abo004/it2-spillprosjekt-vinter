@@ -71,6 +71,7 @@ def handle_input(events):
                     explosions.append(Explosion((x, y), 20))
                     enemies.remove(enemy)
                     number_of_enemies = STARTING_NUMBER_OF_ENEMIES + score//10
+                    boom_sound.stop()
                     boom_sound.play()
 
                     break
