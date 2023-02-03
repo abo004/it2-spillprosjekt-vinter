@@ -43,7 +43,7 @@ player = Player(pygame.image.load(
 button_width = 200
 button_height = 40
 restart_button = Button(pygame.Rect((SCREEN_WIDTH-button_width)/2, (SCREEN_HEIGHT-button_height)/2-50, button_width, button_height),
-                        (255, 255, 255), "Restart", (0, 0, 0), fonts["text1"], init_game)
+                        (255, 255, 255), "Restart", (0, 0, 0), fonts["text1"])
 quit_button = Button(pygame.Rect((SCREEN_WIDTH-button_width)/2, (SCREEN_HEIGHT-button_height)/2+50, button_width, button_height),
                      (255, 255, 255), "Quit", (0, 0, 0), fonts["text1"], pygame.quit)
 

@@ -27,7 +27,7 @@ if __name__ == "__main__":
             if event.type == pygame.QUIT:
                 running = False
 
-        if game.var.lives > 0:
+        if game.lives > 0:
             game.handle_input(events)
             game.update(dt)
             game.draw(screen)
